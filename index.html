@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>화랑 세무회계 | 종합소득세 신고 접수</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d2d5e;
+    --navy-dark: #08204a;
+    --navy-light: #1a4080;
+    --navy-mid: #1e3a6e;
+    --gold: #c8a96e;
+    --gold-light: #e0c48a;
+    --white: #ffffff;
+    --off-white: #f5f6f8;
+    --text-muted: rgba(255,255,255,0.65);
+    --border: rgba(200,169,110,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    background: var(--navy-dark);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND PATTERN */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(26,64,128,0.6) 0%, transparent 70%),
+      repeating-linear-gradient(
+        60deg,
+        transparent,
+        transparent 60px,
+        rgba(200,169,110,0.03) 60px,
+        rgba(200,169,110,0.03) 61px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,32,74,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-hex {
+    width: 44px;
+    height: 44px;
+  }
+
+  .logo-text h1 {
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+
+  .logo-text p {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .header-badge {
+    background: rgba(200,169,110,0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 5rem 2rem 4rem;
+  }
+
+  .hero-kicker {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(200,169,110,0.4);
+    padding-bottom: 0.5rem;
+  }
+
+  .hero h2 {
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 1.25rem;
+    color: var(--white);
+  }
+
+  .hero h2 em {
+    font-style: normal;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 520px;
+    margin: 0 auto 1rem;
+    font-weight: 300;
+  }
+
+  .deadline-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(200,169,110,0.12);
+    border: 1px solid rgba(200,169,110,0.5);
+    color: var(--gold-light);
+    font-size: 0.82rem;
+    padding: 0.45rem 1.2rem;
+    border-radius: 100px;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+
+  .deadline-chip::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 1.8s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* FEATURES */
+  .features {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .feature-item {
+    background: rgba(13,45,94,0.6);
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+  }
+
+  .feature-num {
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .feature-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    font-weight: 300;
+  }
+
+  /* FORM SECTION */
+  .form-section {
+    position: relative;
+    z-index: 5;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 0 1.5rem 5rem;
+  }
+
+  .form-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2.5rem 2.5rem;
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--navy-light), var(--gold), var(--navy-light));
+  }
+
+  .form-card h3 {
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--white);
+  }
+
+  .form-card .form-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .field {
+    margin-bottom: 1.4rem;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 0.55rem;
+  }
+
+  .field label span {
+    color: rgba(200,169,110,0.5);
+    font-size: 0.68rem;
+    letter-spacing: 0;
+    font-weight: 300;
+    margin-left: 0.3rem;
+  }
+
+  .field input, .field select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 3px;
+    padding: 0.85rem 1rem;
+    color: var(--white);
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 400;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .field input::placeholder {
+    color: rgba(255,255,255,0.3);
+    font-weight: 300;
+  }
+
+  .field input:focus, .field select:focus {
+    border-color: var(--gold);
+    background: rgba(200,169,110,0.06);
+  }
+
+  .field select option {
+    background: var(--navy-dark);
+    color: var(--white);
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .privacy-note {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 3px;
+    background: rgba(0,0,0,0.15);
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--navy-dark);
+    border: none;
+    border-radius: 3px;
+    padding: 1rem;
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-btn:hover { background: var(--gold-light); }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { background: rgba(200,169,110,0.35); color: rgba(255,255,255,0.4); cursor: not-allowed; }
+
+  /* MESSAGES */
+  .msg {
+    display: none;
+    margin-top: 1.2rem;
+    padding: 1rem 1.2rem;
+    border-radius: 3px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .msg.success {
+    background: rgba(29,158,117,0.12);
+    border: 1px solid rgba(29,158,117,0.4);
+    color: #5dcaa5;
+  }
+
+  .msg.error {
+    background: rgba(226,75,74,0.1);
+    border: 1px solid rgba(226,75,74,0.35);
+    color: #f09595;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 5;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.08em;
+    font-weight: 300;
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 1.2rem 1.5rem; }
+    .features { grid-template-columns: repeat(3, 1fr); }
+    .form-card { padding: 2rem 1.5rem; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+
+  /* ── MODAL OVERLAY ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(5, 16, 40, 0.88);
+    backdrop-filter: blur(6px);
+    animation: overlayIn 0.3s ease;
+  }
+  .modal-overlay.open { display: flex; }
+
+  @keyframes overlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .modal-box {
+    position: relative;
+    background: linear-gradient(160deg, #0f2d5c 0%, #09214a 100%);
+    border: 1px solid rgba(200,169,110,0.45);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 540px;
+    max-height: 92vh;
+    overflow-y: auto;
+    animation: boxIn 0.38s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.1) inset;
+  }
+
+  @keyframes boxIn {
+    from { opacity: 0; transform: translateY(28px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* top accent bar */
+  .modal-box::before {
+    content: '';
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .modal-inner { padding: 2rem 2.2rem 2.2rem; }
+
+  /* badge */
+  .modal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(200,169,110,0.14);
+    border: 1px solid rgba(200,169,110,0.5);
+    border-radius: 100px;
+    color: var(--gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    padding: 0.3rem 0.9rem;
+    margin-bottom: 1rem;
+  }
+  .modal-badge::before {
+    content: '📋';
+    font-size: 0.85rem;
+    letter-spacing: 0;
+  }
+
+  .modal-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+  }
+  .modal-title em {
+    font-style: normal;
+    color: var(--gold-light);
+  }
+  .modal-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 1.6rem;
+    line-height: 1.6;
+  }
+
+  /* divider */
+  .modal-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,169,110,0.35), transparent);
+    margin-bottom: 1.5rem;
+  }
+
+  /* doc list */
+  .doc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .doc-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 0.85rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,169,110,0.12);
+    border-radius: 4px;
+    transition: background 0.15s, border-color 0.15s;
+    cursor: default;
+  }
+  .doc-item:hover {
+    background: rgba(200,169,110,0.07);
+    border-color: rgba(200,169,110,0.28);
+  }
+
+  .doc-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    background: rgba(200,169,110,0.15);
+    border: 1px solid rgba(200,169,110,0.4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.67rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-top: 1px;
+  }
+
+  .doc-text {
+    font-size: 0.855rem;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.55;
+    font-weight: 400;
+  }
+  .doc-text strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .doc-text small {
+    display: block;
+    font-size: 0.73rem;
+    color: rgba(200,169,110,0.7);
+    margin-top: 0.2rem;
+    font-weight: 300;
+  }
+
+  /* contact box */
+  .modal-contact {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 4px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1.8rem;
+  }
+  .modal-contact-title {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.65rem;
+  }
+  .contact-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 0.35rem;
+    line-height: 1.5;
+  }
+  .contact-line:last-child { margin-bottom: 0; }
+  .contact-line b {
+    color: var(--gold-light);
+    font-weight: 500;
+    min-width: 52px;
+  }
+
+  /* buttons */
+  .modal-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .modal-confirm-btn {
+    flex: 1;
+    background: var(--gold);
+    color: var(--navy-dark);
+    border: none;
+    border-radius: 3px;
+    padding: 0.95rem 1rem;
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .modal-confirm-btn:hover { background: var(--gold-light); }
+  .modal-confirm-btn:active { transform: scale(0.99); }
+  .modal-confirm-btn br + * , .modal-confirm-btn { line-height: 1.45; }
+
+  .modal-close-btn {
+    flex: 0 0 auto;
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    padding: 0.95rem 1.2rem;
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .modal-close-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.75);
+  }
+
+  .modal-pdf-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    flex: 0 0 auto;
+    background: rgba(99,155,210,0.18);
+    color: #90c4f0;
+    border: 1px solid rgba(99,155,210,0.55);
+    border-radius: 3px;
+    padding: 0.95rem 1rem;
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+  .modal-pdf-btn:hover {
+    background: rgba(99,155,210,0.32);
+    color: #bddcf8;
+    border-color: rgba(99,155,210,0.85);
+  }
+  .modal-pdf-btn svg { flex-shrink: 0; }
+  .modal-x {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.07);
+    border: none;
+    border-radius: 50%;
+    color: rgba(255,255,255,0.45);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    z-index: 10;
+  }
+  .modal-x:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+
+  @media (max-width: 540px) {
+    .modal-inner { padding: 1.5rem 1.3rem 1.8rem; }
+    .modal-title { font-size: 1.2rem; }
+    .modal-actions { flex-wrap: wrap; }
+    .modal-close-btn { order: 3; flex: 1 1 100%; text-align: center; }
+    .modal-pdf-btn { order: 2; flex: 1; }
+    .modal-confirm-btn { order: 1; flex: 1 1 100%; }
+  }
+  /* modal section headers */
+  .modal-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    font-weight: 700;
+    margin: 1.4rem 0 0.75rem;
+    text-transform: uppercase;
+  }
+  .modal-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(200,169,110,0.2);
+  }
+  .modal-section-title:first-of-type { margin-top: 0; }
+
+  /* basic deduction info box */
+  .deduction-info {
+    background: rgba(200,169,110,0.07);
+    border: 1px solid rgba(200,169,110,0.22);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.65;
+  }
+  .deduction-info b { color: var(--gold-light); font-weight: 600; }
+
+  /* naver place link */
+  .naver-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #03C75A;
+    color: #fff;
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    margin-top: 0.6rem;
+    transition: opacity 0.15s;
+  }
+  .naver-link:hover { opacity: 0.88; }
+  .naver-link svg { flex-shrink: 0; }
+
+  /* ── 접수 완료 SUCCESS MODAL ── */
+  #successModal.modal-overlay { z-index: 1100; }
+
+  .success-box {
+    position: relative;
+    background: linear-gradient(160deg, #0f3060 0%, #09214a 100%);
+    border: 1px solid rgba(29,185,130,0.45);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    animation: boxIn 0.42s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(29,185,130,0.1) inset;
+    overflow: hidden;
+  }
+  .success-box::before {
+    content: '';
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #1db974, #5ddcaa, #1db974, transparent);
+  }
+  .success-inner { padding: 2.2rem 2rem 2rem; }
+  .success-icon {
+    width: 64px; height: 64px;
+    background: rgba(29,185,130,0.12);
+    border: 2px solid rgba(29,185,130,0.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem;
+    animation: iconPop 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both;
+  }
+  @keyframes iconPop {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .success-title {
+    font-size: 1.3rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem;
+  }
+  .success-title em { font-style: normal; color: #5ddcaa; }
+  .success-desc {
+    font-size: 0.85rem; color: var(--text-muted); line-height: 1.75;
+    margin-bottom: 1.6rem; font-weight: 300;
+  }
+  .success-desc b { color: rgba(255,255,255,0.85); font-weight: 600; }
+  .success-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(29,185,130,0.25), transparent);
+    margin-bottom: 1.1rem;
+  }
+  .success-pdf-note {
+    font-size: 0.72rem; color: rgba(255,255,255,0.38);
+    margin-bottom: 0.7rem; letter-spacing: 0.05em;
+  }
+  .success-actions { display: flex; flex-direction: column; gap: 0.6rem; }
+  .success-pdf-btn {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    width: 100%;
+    background: rgba(99,155,210,0.18); color: #90c4f0;
+    border: 1px solid rgba(99,155,210,0.55); border-radius: 3px;
+    padding: 0.9rem 1rem;
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    transition: background 0.2s, color 0.2s; letter-spacing: 0.04em;
+  }
+  .success-pdf-btn:hover { background: rgba(99,155,210,0.3); color: #bddcf8; }
+  .success-naver-btn {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    width: 100%;
+    background: #03C75A; color: #fff;
+    border-radius: 3px; padding: 0.9rem 1rem;
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 0.88rem; font-weight: 700; text-decoration: none;
+    letter-spacing: 0.04em; transition: opacity 0.15s;
+  }
+  .success-naver-btn:hover { opacity: 0.88; }
+  .success-close-btn {
+    width: 100%; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.42);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 3px;
+    padding: 0.72rem 1rem;
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    font-size: 0.8rem; font-weight: 400; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .success-close-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+  .success-x {
+    position: absolute; top: 1rem; right: 1rem;
+    width: 28px; height: 28px; background: rgba(255,255,255,0.07);
+    border: none; border-radius: 50%; color: rgba(255,255,255,0.4);
+    font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+  }
+  .success-x:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <svg class="logo-hex" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="22,2 40,12 40,32 22,42 4,32 4,12" fill="none" stroke="rgba(200,169,110,0.6)" stroke-width="1.5"/>
+      <polygon points="22,6 37,14 37,30 22,38 7,30 7,14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+      <polygon points="22,6 37,14 22,22" fill="rgba(255,255,255,0.15)"/>
+      <polygon points="22,22 37,30 22,38" fill="rgba(200,169,110,0.25)"/>
+      <polygon points="22,6 22,22 7,14" fill="rgba(255,255,255,0.08)"/>
+    </svg>
+    <div class="logo-text">
+      <h1>화랑 세무회계</h1>
+      <p>HWARANG TAX SERVICE</p>
+    </div>
+  </div>
+  <div class="header-badge">2025 종합소득세</div>
+</header>
+
+<section class="hero">
+  <div class="hero-kicker">COMPREHENSIVE INCOME TAX FILING 2025</div>
+  <h2>
+    <em>2025년 종합소득세</em><br>
+    신고 접수를 시작합니다
+  </h2>
+  <p class="hero-sub">
+    복잡한 세금 신고, 화랑 세무회계에 맡겨주세요.<br>
+    전문 세무사가 직접 검토하고 최적의 절세 방안을 찾아드립니다.
+  </p>
+  <div class="deadline-chip">신고 기간 · 2026년 5월 1일 ~ 5월 31일</div>
+</section>
+
+<div class="features">
+  <div class="feature-item">
+    <div class="feature-num">최적화</div>
+    <div class="feature-label">절세 전략</div>
+  </div>
+  <div class="feature-item">
+    <div class="feature-num">1:1</div>
+    <div class="feature-label">전담 세무사</div>
+  </div>
+  <div class="feature-item">
+    <div class="feature-num">비대면</div>
+    <div class="feature-label">전국 접수 가능</div>
+  </div>
+</div>
+
+<section class="form-section">
+  <div class="form-card">
+    <h3>신고 접수 신청</h3>
+    <p class="form-desc">아래 정보를 입력해 주시면 담당 세무사가 빠른 시일 내 연락드립니다.</p>
+
+    <div class="field">
+      <label>성함 <span>* 필수</span></label>
+      <input type="text" id="name" placeholder="홍길동" autocomplete="name">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>연락처 <span>* 필수</span></label>
+        <input type="tel" id="phone" placeholder="010-0000-0000" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label>소득 구분 <span>선택</span></label>
+        <select id="incomeType">
+          <option value="">선택해주세요</option>
+          <option value="사업소득">사업소득</option>
+          <option value="근로소득">근로소득</option>
+          <option value="프리랜서">프리랜서 (3.3%)</option>
+          <option value="임대소득">임대소득</option>
+          <option value="복합">복합 소득</option>
+          <option value="기타">기타</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>수입금액 (연간) <span>* 필수</span></label>
+      <input type="text" id="income" placeholder="예: 35,000,000원" inputmode="numeric">
+    </div>
+
+    <div class="privacy-note">
+      ※ 입력하신 정보는 종합소득세 신고 상담 목적으로만 사용되며, 관련 법률에 따라 안전하게 보호됩니다.
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+      신청 접수하기 →
+    </button>
+
+    <div style="text-align:center; margin-top:0.9rem;">
+      <button onclick="openModal()" style="background:none;border:none;color:rgba(200,169,110,0.6);font-size:0.75rem;font-family:inherit;cursor:pointer;letter-spacing:0.06em;text-decoration:underline;text-underline-offset:3px;padding:0;">
+        📋 접수 전 준비 서류 확인하기
+      </button>
+    </div>
+
+    <div class="msg success" id="successMsg">
+      ✓ 접수가 완료되었습니다.<br>
+      담당 세무사가 1~2 영업일 이내에 연락드리겠습니다. 감사합니다.
+    </div>
+    <div class="msg error" id="errorMsg">
+      접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.
+    </div>
+  </div>
+</section>
+
+<!-- ── 서류 안내 모달 ── -->
+<div class="modal-overlay" id="docModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeModal()" aria-label="닫기">✕</button>
+    <div class="modal-inner">
+
+      <div class="modal-badge">접수 전 필독 · CHECKLIST</div>
+      <div class="modal-title" id="modalTitle">
+        신청 전에<br><em>준비 서류를 확인해 주세요</em>
+      </div>
+      <p class="modal-subtitle">
+        아래 서류를 미리 준비하시면 신고 처리가 훨씬 빠르고 정확해집니다.
+      </p>
+
+      <div class="modal-divider"></div>
+
+      <!-- ① 기본 접수 서류 -->
+      <div class="modal-section-title">📁 기본 접수 서류</div>
+      <ul class="doc-list">
+        <li class="doc-item">
+          <span class="doc-num">1</span>
+          <span class="doc-text"><strong>신분증 사본 및 사업자등록증</strong></span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">2</span>
+          <span class="doc-text"><strong>환급받으실 통장사본 (계좌번호)</strong></span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">3</span>
+          <span class="doc-text">
+            <strong>카드이용내역 (신용·체크카드)</strong>
+            <small>기간: 2025.1.1 ~ 2025.12.31 · 엑셀 파일 요망 (간소화자료 대체 가능)</small>
+          </span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">4</span>
+          <span class="doc-text">
+            <strong>연말정산간소화 자료</strong>
+            <small>근로소득자만 해당</small>
+          </span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">5</span>
+          <span class="doc-text"><strong>연금저축 또는 IRP 납입확인서</strong></span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">6</span>
+          <span class="doc-text"><strong>기부금영수증</strong></span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">7</span>
+          <span class="doc-text">
+            <strong>접대비영수증</strong>
+            <small>청첩장, 부고장 등 — 모바일 캡처 가능 · 건당 20만 원 공제</small>
+          </span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">8</span>
+          <span class="doc-text">
+            <strong>기타 계좌이체한 사업지출내역</strong>
+            <small>예) 보험설계사 DB구입내역, 명함·홍보물 제작비 등 판촉비 · 카드 결제 시 카드결제내역으로 대체 가능</small>
+          </span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">9</span>
+          <span class="doc-text">
+            <strong>사업장 임차료 관련 서류</strong>
+            <small>사무실이 있는 경우에 해당</small>
+          </span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">10</span>
+          <span class="doc-text"><strong>차량 보험료 가입증명서</strong></span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">11</span>
+          <span class="doc-text">
+            <strong>월세계약서 또는 월세납입내역</strong>
+            <small>근로소득자만 해당 · 세대 전원 무주택자인 경우에만 적용 · 임차물건이 기준시가 4억 원 이하 또는 전용면적 85㎡ 이하여야 함</small>
+          </span>
+        </li>
+      </ul>
+
+      <!-- ② 부양가족 기본공제 -->
+      <div class="modal-section-title">👨‍👩‍👧 부양가족 기본공제 신청 시 추가 서류</div>
+      <div class="deduction-info">
+        부양가족 기본공제를 받고자 하시는 분은 아래 서류를 추가로 준비해 주세요.<br>
+        <b>기본공제대상자 요건:</b> 나이 요건 &amp; 연간 소득금액 100만 원 이하<br>
+        · 직계존속: 만 60세 이상 &nbsp;/&nbsp; 직계비속·형제자매: 만 20세 이하<br>
+        · <b>공제받을 대상자를 표시하여 제출해 주세요.</b>
+      </div>
+      <ul class="doc-list">
+        <li class="doc-item">
+          <span class="doc-num">1</span>
+          <span class="doc-text"><strong>가족관계증명서</strong></span>
+        </li>
+        <li class="doc-item">
+          <span class="doc-num">2</span>
+          <span class="doc-text"><strong>주민등록등본</strong></span>
+        </li>
+      </ul>
+
+      <!-- 문의 -->
+      <div class="modal-contact">
+        <div class="modal-contact-title">📞 &nbsp;접수 문의</div>
+        <div class="contact-line"><b>대표번호</b> 031-663-1164</div>
+        <a class="naver-link" href="https://naver.me/FmfuQRNz" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/></svg>
+          네이버 플레이스에서 더 알아보기
+        </a>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-close-btn" onclick="closeModal()">닫기</button>
+        <button class="modal-pdf-btn" onclick="downloadChecklistPDF()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          안내문 PDF 다운로드
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── 접수 완료 팝업 ── -->
+<div class="modal-overlay" id="successModal">
+  <div class="success-box">
+    <button class="success-x" onclick="closeSuccessModal()" aria-label="닫기">✕</button>
+    <div class="success-inner">
+
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1db974" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+
+      <div class="success-title">접수가 <em>완료</em>되었습니다</div>
+      <p class="success-desc">
+        담당 세무사가 <b>1~2 영업일 이내</b>에 연락드리겠습니다.<br>
+        아래에서 준비 서류 안내문을 미리 받아두실 수 있습니다.
+      </p>
+
+      <div class="success-divider"></div>
+      <p class="success-pdf-note">서류를 미리 준비하시면 더 빠른 처리가 가능합니다</p>
+
+      <div class="success-actions">
+        <button class="success-pdf-btn" onclick="downloadChecklistPDF()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          준비 서류 안내문 PDF 다운로드
+        </button>
+        <a class="success-naver-btn" href="https://naver.me/FmfuQRNz" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/></svg>
+          자세히 문의하기
+        </a>
+        <button class="success-close-btn" onclick="closeSuccessModal()">닫기</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-company-info">
+    <span><b>전화</b> 031-663-1164</span><span class="divider">|</span>
+    <span><b>팩스</b> 031-696-6892</span><span class="divider">|</span>
+    <span><b>이메일</b> hwarangtaxsvc@gmail.com</span><br>
+    <span><b>주소</b> 경기도 평택시 고덕갈평5길 28, 408호(어반센터프라자, 4층)</span>
+  </div>
+  <div class="footer-copyright">
+    © 화랑 세무회계 HWARANG TAX SERVICE · 종합소득세 신고 전문
+  </div>
+</footer>
+
+<script>
+  const FIXED_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwwAuV0_Qgo2JEMwOo7DkCEKdkd0jQJykrf9BiFNrgH9_m5Sn5mHI36tCgRUKb-BsSb/exec';
+
+  function formatPhone(val) {
+    const digits = val.replace(/\D/g, '');
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 7) return digits.slice(0,3) + '-' + digits.slice(3);
+    return digits.slice(0,3) + '-' + digits.slice(3,7) + '-' + digits.slice(7,11);
+  }
+
+  document.getElementById('phone').addEventListener('input', function() {
+    this.value = formatPhone(this.value);
+  });
+
+  document.getElementById('income').addEventListener('input', function() {
+    const raw = this.value.replace(/[^0-9]/g, '');
+    if (raw) this.value = parseInt(raw).toLocaleString('ko-KR') + '원';
+  });
+
+  // ── PDF 안내문 다운로드 ──
+  function downloadChecklistPDF() {
+    const win = window.open('', '_blank', 'width=800,height=900');
+    win.document.write(`<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>화랑 세무회계 - 종합소득세 신고 서류 안내</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+    color: #1a1a2e;
+    background: #fff;
+    padding: 0;
+    font-size: 11pt;
+  }
+  .page { max-width: 700px; margin: 0 auto; padding: 40px 44px 48px; }
+
+  /* header */
+  .pdf-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2.5px solid #0d2d5e;
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  .pdf-logo { display: flex; align-items: center; gap: 10px; }
+  .pdf-logo-hex { width: 36px; height: 36px; }
+  .pdf-logo-name { font-size: 16pt; font-weight: 800; color: #0d2d5e; letter-spacing: 0.04em; }
+  .pdf-logo-sub { font-size: 7.5pt; color: #c8a96e; letter-spacing: 0.2em; font-weight: 500; margin-top: 2px; }
+  .pdf-doc-title { text-align: right; }
+  .pdf-doc-title .title-main { font-size: 11pt; font-weight: 700; color: #0d2d5e; }
+  .pdf-doc-title .title-sub { font-size: 8pt; color: #888; margin-top: 2px; }
+
+  /* hero band */
+  .pdf-band {
+    background: #0d2d5e;
+    color: #fff;
+    text-align: center;
+    padding: 14px 20px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .pdf-band h1 { font-size: 15pt; font-weight: 700; letter-spacing: 0.06em; }
+  .pdf-band p { font-size: 8.5pt; color: rgba(255,255,255,0.7); margin-top: 5px; letter-spacing: 0.04em; }
+
+  /* section */
+  .pdf-section { margin-bottom: 22px; }
+  .pdf-section-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #0d2d5e;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-left: 3px solid #c8a96e;
+    padding-left: 8px;
+    margin-bottom: 10px;
+  }
+
+  /* doc list */
+  .doc-table { width: 100%; border-collapse: collapse; }
+  .doc-table tr { border-bottom: 1px solid #eee; }
+  .doc-table tr:last-child { border-bottom: none; }
+  .doc-num-cell {
+    width: 28px;
+    vertical-align: top;
+    padding: 7px 6px 7px 0;
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #c8a96e;
+    text-align: center;
+  }
+  .doc-body-cell { padding: 7px 0; vertical-align: top; }
+  .doc-main { font-size: 10pt; font-weight: 600; color: #1a1a2e; }
+  .doc-sub { font-size: 8pt; color: #888; margin-top: 2px; line-height: 1.5; }
+
+  /* deduction info box */
+  .deduction-box {
+    background: #f8f5ef;
+    border: 1px solid #c8a96e;
+    border-radius: 4px;
+    padding: 10px 13px;
+    margin-bottom: 10px;
+    font-size: 8.5pt;
+    color: #444;
+    line-height: 1.7;
+  }
+  .deduction-box b { color: #0d2d5e; font-weight: 700; }
+  .deduction-box .highlight { color: #b8860b; font-weight: 700; }
+
+  /* contact */
+  .pdf-contact {
+    background: #f2f5fa;
+    border: 1px solid #d0d8e8;
+    border-radius: 4px;
+    padding: 12px 15px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .contact-main { font-size: 10pt; font-weight: 700; color: #0d2d5e; }
+  .contact-num { font-size: 13pt; font-weight: 800; color: #0d2d5e; letter-spacing: 0.05em; }
+  .contact-naver { font-size: 8.5pt; color: #03C75A; font-weight: 600; }
+
+  /* footer */
+  .pdf-footer {
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    font-size: 7.5pt;
+    color: #aaa;
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 20px 30px 30px; }
+    @page { margin: 1cm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="pdf-header">
+    <div class="pdf-logo">
+      <svg class="pdf-logo-hex" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="22,2 40,12 40,32 22,42 4,32 4,12" fill="none" stroke="#c8a96e" stroke-width="2"/>
+        <polygon points="22,6 37,14 37,30 22,38 7,30 7,14" fill="#e8f0f8" stroke="#0d2d5e" stroke-width="1"/>
+        <polygon points="22,6 37,14 22,22" fill="#0d2d5e" opacity="0.6"/>
+        <polygon points="22,22 37,30 22,38" fill="#c8a96e" opacity="0.5"/>
+      </svg>
+      <div>
+        <div class="pdf-logo-name">화랑 세무회계</div>
+        <div class="pdf-logo-sub">HWARANG TAX SERVICE</div>
+      </div>
+    </div>
+    <div class="pdf-doc-title">
+      <div class="title-main">종합소득세 신고 서류 안내문</div>
+      <div class="title-sub">2025년 귀속 · 신고기간 2026.05.01 ~ 05.31</div>
+    </div>
+  </div>
+
+  <div class="pdf-band">
+    <h1>📋 접수 전 준비 서류 체크리스트</h1>
+    <p>아래 서류를 미리 준비하시면 신고 처리가 훨씬 빠르고 정확해집니다</p>
+  </div>
+
+  <!-- 기본 접수 서류 -->
+  <div class="pdf-section">
+    <div class="pdf-section-title">📁 기본 접수 서류</div>
+    <table class="doc-table">
+      <tr><td class="doc-num-cell">1</td><td class="doc-body-cell"><div class="doc-main">신분증 사본 및 사업자등록증</div></td></tr>
+      <tr><td class="doc-num-cell">2</td><td class="doc-body-cell"><div class="doc-main">환급받으실 통장사본 (계좌번호)</div></td></tr>
+      <tr><td class="doc-num-cell">3</td><td class="doc-body-cell">
+        <div class="doc-main">카드이용내역 (신용·체크카드)</div>
+        <div class="doc-sub">기간: 2025.1.1 ~ 2025.12.31 · 엑셀 파일 요망 (간소화자료 대체 가능)</div>
+      </td></tr>
+      <tr><td class="doc-num-cell">4</td><td class="doc-body-cell">
+        <div class="doc-main">연말정산간소화 자료</div>
+        <div class="doc-sub">근로소득자만 해당</div>
+      </td></tr>
+      <tr><td class="doc-num-cell">5</td><td class="doc-body-cell"><div class="doc-main">연금저축 또는 IRP 납입확인서</div></td></tr>
+      <tr><td class="doc-num-cell">6</td><td class="doc-body-cell"><div class="doc-main">기부금영수증</div></td></tr>
+      <tr><td class="doc-num-cell">7</td><td class="doc-body-cell">
+        <div class="doc-main">접대비영수증</div>
+        <div class="doc-sub">청첩장, 부고장 등 — 모바일 캡처 가능 · 건당 20만 원 공제</div>
+      </td></tr>
+      <tr><td class="doc-num-cell">8</td><td class="doc-body-cell">
+        <div class="doc-main">기타 계좌이체한 사업지출내역</div>
+        <div class="doc-sub">예) 보험설계사 DB구입내역, 명함·홍보물 제작비 등 판촉비 · 카드 결제 시 카드결제내역으로 대체 가능</div>
+      </td></tr>
+      <tr><td class="doc-num-cell">9</td><td class="doc-body-cell">
+        <div class="doc-main">사업장 임차료 관련 서류</div>
+        <div class="doc-sub">사무실이 있는 경우에 해당</div>
+      </td></tr>
+      <tr><td class="doc-num-cell">10</td><td class="doc-body-cell"><div class="doc-main">차량 보험료 가입증명서</div></td></tr>
+      <tr><td class="doc-num-cell">11</td><td class="doc-body-cell">
+        <div class="doc-main">월세계약서 또는 월세납입내역</div>
+        <div class="doc-sub">근로소득자만 해당 · 세대 전원 무주택자인 경우에만 적용 · 임차물건이 기준시가 4억 원 이하 또는 전용면적 85㎡ 이하여야 함</div>
+      </td></tr>
+    </table>
+  </div>
+
+  <!-- 부양가족 기본공제 -->
+  <div class="pdf-section">
+    <div class="pdf-section-title">👨‍👩‍👧 부양가족 기본공제 신청 시 추가 서류</div>
+    <div class="deduction-box">
+      부양가족 기본공제를 받고자 하시는 분은 아래 서류를 추가로 준비해 주세요.<br>
+      <b>기본공제대상자 요건:</b> 나이 요건 &amp; 연간 소득금액 100만 원 이하<br>
+      · 직계존속: 만 60세 이상 &nbsp;/&nbsp; 직계비속·형제자매: 만 20세 이하<br>
+      · <span class="highlight">공제받을 대상자를 표시하여 제출해 주세요.</span>
+    </div>
+    <table class="doc-table">
+      <tr><td class="doc-num-cell">1</td><td class="doc-body-cell"><div class="doc-main">가족관계증명서</div></td></tr>
+      <tr><td class="doc-num-cell">2</td><td class="doc-body-cell"><div class="doc-main">주민등록등본</div></td></tr>
+    </table>
+  </div>
+
+  <!-- 문의 -->
+  <div class="pdf-contact">
+    <div>
+      <div class="contact-main">📞 접수 문의 · 대표번호</div>
+      <div class="contact-num">031-663-1164</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="contact-naver">🟢 네이버 플레이스</div>
+      <div style="font-size:8pt; color:#555; margin-top:3px;">naver.me/FmfuQRNz</div>
+    </div>
+  </div>
+
+  <div class="pdf-footer">
+    경기도 평택시 고덕갈평5길 28, 408호 (어반센터프라자, 4층) &nbsp;|&nbsp; 팩스 031-696-6892 &nbsp;|&nbsp; hwarangtaxsvc@gmail.com<br>
+    © 화랑 세무회계 HWARANG TAX SERVICE · 종합소득세 신고 전문
+  </div>
+
+</div>
+<script>
+  window.onload = function() {
+    setTimeout(function() { window.print(); }, 600);
+  };
+<\/script>
+</body>
+</html>`);
+    win.document.close();
+  }
+  function openModal() {
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const income = document.getElementById('income').value.trim();
+
+    if (!name) { alert('성함을 입력해 주세요.'); return; }
+    if (!phone || phone.replace(/\D/g,'').length < 10) { alert('올바른 연락처를 입력해 주세요.'); return; }
+    if (!income) { alert('수입금액을 입력해 주세요.'); return; }
+
+    document.getElementById('docModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('docModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeSuccessModal() {
+    document.getElementById('successModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // 모달 바깥 클릭 시 닫기
+  document.getElementById('docModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.getElementById('successModal').addEventListener('click', function(e) {
+    if (e.target === this) closeSuccessModal();
+  });
+
+  // ESC 키
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeModal(); closeSuccessModal(); }
+  });
+
+  // 접수 버튼 → 바로 접수 처리
+  async function submitForm() {
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const incomeType = document.getElementById('incomeType').value;
+    const income = document.getElementById('income').value.trim();
+    const btn = document.getElementById('submitBtn');
+
+    if (!name) { alert('성함을 입력해 주세요.'); return; }
+    if (!phone || phone.replace(/\D/g,'').length < 10) { alert('올바른 연락처를 입력해 주세요.'); return; }
+    if (!income) { alert('수입금액을 입력해 주세요.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '접수 중...';
+
+    try {
+      await fetch(FIXED_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          phone,
+          incomeType: incomeType || '미입력',
+          income
+        })
+      });
+
+      document.getElementById('name').value = '';
+      document.getElementById('phone').value = '';
+      document.getElementById('incomeType').value = '';
+      document.getElementById('income').value = '';
+      btn.textContent = '접수 완료 ✓';
+
+      // 완료 팝업 표시
+      document.getElementById('successModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+    } catch (err) {
+      document.getElementById('errorMsg').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = '신청 접수하기 →';
+    }
+  }
+</script>
+</body>
+</html>
