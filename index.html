@@ -557,9 +557,21 @@
 </footer>
 
 <script>
-  // 저장된 웹훅 URL 불러오기
-  const savedUrl = 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwwAuV0_Qgo2JEMwOo7DkCEKdkd0jQJykrf9BiFNrgH9_m5Sn5mHI36tCgRUKb-BsSb/exec';
-  document.getElementById('webhookUrl').value = savedUrl;
+<script>
+  // 웹훅 URL을 변수에 직접 저장 (이미지 속 URL로 교체하세요)
+  const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbywUjt8DchHUX0QjlgrX01BeQ/exec';
+
+  // (기존 formatPhone 함수 등은 그대로 유지)
+
+  async function submitForm() {
+    // ... 중간 생략 ...
+    
+    // webhookUrl 변수 정의를 아래와 같이 수정
+    const webhookUrl = WEBHOOK_URL; 
+
+    // ... 나머지 fetch 로직은 그대로 유지 ...
+  }
+</script>
 
   function saveWebhook(url) {
     localStorage.setItem('hwarang_webhook', url);
