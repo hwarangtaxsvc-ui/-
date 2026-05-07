@@ -552,40 +552,13 @@
   </div>
 </section>
 
-<!-- GOOGLE SHEETS 연동 설정 -->
-<section class="setup-guide">
-  <div class="setup-card">
-    <h4>⚙ 구글 시트 연동 설정 방법</h4>
-    <ol class="setup-steps">
-      <li>
-        <span>Google Sheets에서 새 스프레드시트를 만드세요. 열 제목을 <code>타임스탬프 / 성함 / 연락처 / 소득구분 / 수입금액</code> 으로 설정합니다.</span>
-      </li>
-      <li>
-        <span>구글 시트 상단 메뉴 → <code>확장 프로그램</code> → <code>Apps Script</code>를 클릭하세요.</span>
-      </li>
-      <li>
-        <span>아래 코드를 붙여넣고 저장하세요:<br>
-        <code>function doPost(e) { var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet(); var data = JSON.parse(e.postData.contents); sheet.appendRow([new Date(), data.name, data.phone, data.incomeType, data.income]); return ContentService.createTextOutput(JSON.stringify({result:'success'})).setMimeType(ContentService.MimeType.JSON); }</code>
-        </span>
-      </li>
-      <li>
-        <span><code>배포</code> → <code>새 배포</code> → 유형: <code>웹 앱</code> → 액세스: <code>모든 사용자</code>로 설정 후 배포합니다.</span>
-      </li>
-      <li>
-        <span>생성된 <strong>웹 앱 URL</strong>을 아래에 입력하세요:</span>
-      </li>
-    </ol>
-    <input type="url" id="webhookUrl" placeholder="https://script.google.com/macros/s/..." style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(200,169,110,0.3); border-radius:3px; padding:0.7rem 0.9rem; color:#fff; font-family:monospace; font-size:0.78rem; outline:none;" oninput="saveWebhook(this.value)">
-  </div>
-</section>
-
 <footer>
   © 화랑 세무회계 HWARANG TAX SERVICE · 종합소득세 신고 전문
 </footer>
 
 <script>
   // 저장된 웹훅 URL 불러오기
-  const savedUrl = localStorage.getItem('hwarang_webhook') || '';
+  const savedUrl = 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwwAuV0_Qgo2JEMwOo7DkCEKdkd0jQJykrf9BiFNrgH9_m5Sn5mHI36tCgRUKb-BsSb/exec';
   document.getElementById('webhookUrl').value = savedUrl;
 
   function saveWebhook(url) {
@@ -637,11 +610,11 @@
 
     try {
       await fetch(webhookUrl, {
-        method: 'POST',   
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, incomeType: incomeType || '미입력', income })
-      });
-
+  method: 'POST',
+  mode: 'no-cors', // 구글 스크립트 통신 시 CORS 에러 방지를 위해 추가
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name, phone, incomeType: incomeType || '미입력', income })
+});
       successMsg.style.display = 'block';
       document.getElementById('name').value = '';
       document.getElementById('phone').value = '';
